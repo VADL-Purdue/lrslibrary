@@ -26,8 +26,9 @@
 %inFileCommon - video with the common background images
 %chopLength - number of frames of deer video to be processed at a time with
 %the stack of empty background images
+%bgLength - the number of frames of empty video to be processed with the chopped deer video. Note that these empty images will be the same for every video stack created unlike deer images that are used up one chop length at a time.
 
-function [stats] = process_video_vadl(method_id, algorithm_id, inFileChop, inFileCommon, outFile, chopLength)
+function [stats] = process_video_vadl(method_id, algorithm_id, inFileChop, inFileCommon, outFile, chopLength, bgLength)
 
 timerVal = tic;
 
@@ -70,7 +71,7 @@ while true %dangerous but we will break inside
 %clearvars -except stats timerVal method_id algorithm_id inFileChop inFileCommon outFile chopLength %clear everything but these
 
 video = [];
-[video_id, nChopFrames, video] = load_video_file_vadl(inFileChop, inFileCommon, chopLength);
+[video_id, nChopFrames, video] = load_video_file_vadl(inFileChop, inFileCommon, chopLength, bgLength);
 
 
 disp(['size of video = ' num2str(size(video))])

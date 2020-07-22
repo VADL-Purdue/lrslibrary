@@ -6,7 +6,7 @@
 %takes in deer and empty stack
 
 %function [video_id, video] = load_video_file_vadl(file)
-function [video_id, nChopFrames, video] = load_video_file_vadl(fileChop, fileCommon, chopLength)
+function [video_id, nChopFrames, video] = load_video_file_vadl(fileChop, fileCommon, chopLength, bgLength)
 
 persistent v_id;
 if isempty(v_id)
@@ -17,6 +17,7 @@ end
 
 video_id = v_id; %passing the video id out
 chopLength = str2num(chopLength) %making the string a number
+bgLength   = str2num(bgLength)   %making the string a number
 
 % displog('Checking input file extension...');
 input_extension = get_file_extension(fileChop);
@@ -33,7 +34,7 @@ else
   %video = mmread(file,[],[],false,true);
   
   %by Manu
-  %read chopLength frames from deer video and all frames from empty video,
+  %read chopLength frames from deer video and (all, now bgLength number of) frames from empty video,
   %create a stack and pass to the calling function
   
   xyloObj_chop = VideoReader(fileChop);
@@ -62,11 +63,13 @@ else
   end
       
   k = 0; 
-  while hasFrame(xyloObj_common) %empty
+  while hasFrame(xyloObj_common) && (k < bgLength) %empty
     k = k+1;
     %disp(["loading empty file, k = " k ", Cumulative frame count = " k+nChopFrames]);
     video.frames(k+nChopFrames).cdata = readFrame(xyloObj_common); %write to k+nChopFrames th frame, writing to kth frame overwrites the deer frames!
   end
+
+  disp("Number of empty frames loaded = " + num2str(k));
 
   %video.nrFramesTotal = k;
   video.nrFramesTotal = k + nChopFrames;
