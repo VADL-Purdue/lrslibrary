@@ -77,12 +77,16 @@ video = [];
 disp(['size of video = ' num2str(size(video))])
 whos video
 
-disp(['processing video v_id ' num2str(video_id) ', video #frames = ' video.nrFramesTotal]);
+disp(['processing video v_id ' num2str(video_id) ', video #frames = ' num2str(video.nrFramesTotal)]);
+
+disp(['nChopFrames is ' num2str(nChopFrames)]);
 
 if nChopFrames == 0
+    disp('Breaking out of process video loop');
     break
 else
-    disp(['nChopFrames ' nChopFrames]);
+   % disp(['nChopFrames ' num2str(nChopFrames)]);
+     disp('Not braking out of loop');
 end
 
 
@@ -121,4 +125,6 @@ end
 close(vL); close(vS); close(vO);
 clear L_file S_file;
 
+disp('Exiting process_video_vadl function');
+return
 end

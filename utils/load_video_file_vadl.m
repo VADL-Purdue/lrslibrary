@@ -59,11 +59,13 @@ else
         nChopFrames = nChopFrames + 1;
     else
         readFrame(xyloObj_chop); %just read frame, do not store it, this increments the internal frame counter
+	%disp('Skipping deer frames');
     end
   end
       
   k = 0; 
-  while hasFrame(xyloObj_common) && (k < bgLength) %empty
+  %if no deer frame is loaded (nChopFrames == 0), don't bother to load bg frames
+  while hasFrame(xyloObj_common) && (nChopFrames ~= 0) && (k < bgLength) %empty
     k = k+1;
     %disp(["loading empty file, k = " k ", Cumulative frame count = " k+nChopFrames]);
     video.frames(k+nChopFrames).cdata = readFrame(xyloObj_common); %write to k+nChopFrames th frame, writing to kth frame overwrites the deer frames!
